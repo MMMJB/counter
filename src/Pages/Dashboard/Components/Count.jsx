@@ -44,7 +44,7 @@ export default function Count({ data }) {
       <div className="text-text-light flex items-center justify-between rounded-lg px-6 py-3 font-serif shadow-md">
         {data.name}
         <span className="text-text-dark">
-          {displayNumber.toFixed(2)} {data.units}
+          {displayNumber?.toFixed(2) || "..."} {data.units}
         </span>
       </div>
     </div>

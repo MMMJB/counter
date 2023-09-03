@@ -3,9 +3,6 @@ import React from "react";
 import Header from "./Components/Header";
 import Count from "./Components/Count";
 
-// min, max, sum, average, median, count
-// daily, weekly, monthly
-
 const data = [
   {
     name: "Pills",
