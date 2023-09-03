@@ -7,5 +7,5 @@ export default function PrivateRoute({ children, reverse }) {
 
   if (!reverse)
     return currentUser ? <>{children}</> : <Navigate to={`/signup`} />;
-  else return !currentUser ? <>{children}</> : <Navigate to="/dashboard" />;
+  else return !currentUser ? <>{children}</> : <Navigate to="/" />;
 }
