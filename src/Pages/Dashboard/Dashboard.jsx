@@ -52,7 +52,7 @@ export default function Dashboard() {
       <Header />
       <div className="flex w-full flex-grow flex-col items-center gap-3 px-6 py-3">
         {data.map((d, i) => {
-          return <Count data={d} key={i} />;
+          return <Count startData={d} key={i} />;
         })}
       </div>
     </div>
