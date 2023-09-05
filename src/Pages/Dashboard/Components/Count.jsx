@@ -12,6 +12,7 @@ export default function Count({ startData }) {
   const [displayNumber, setDisplayNumber] = useState();
   const [data, setData] = useState();
   const [inputValue, setInputValue] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const { currentUser } = useAuth();
 
@@ -78,24 +79,38 @@ export default function Count({ startData }) {
   const closeDialog = (e, v) => {
     e.preventDefault();
 
-    dialogRef.current.close(v);
+    dialogRef.current.close();
 
     setInputValue(0);
   };
 
-  const addItem = (_) => {
+  const addItem = async (e) => {
+    e.preventDefault();
+
+    const updatedLog = [
+      ...data.log,
+      {
+        timestamp: Date.now(),
+        amount: parseInt(inputValue) || 0,
+      },
+    ];
+
+    setLoading(true);
+
+    await updateDoc(docRef.current, {
+      log: updatedLog,
+    });
+
     setData((p) => {
       return {
         ...p,
-        log: [
-          ...p.log,
-          {
-            timestamp: Date.now(),
-            amount: parseInt(dialogRef.current.returnValue) || 0,
-          },
-        ],
+        log: updatedLog,
       };
     });
+
+    setLoading(false);
+    dialogRef.current.close();
+    setInputValue(0);
   };
 
   return (
@@ -103,7 +118,7 @@ export default function Count({ startData }) {
       <div className="text-text-light flex flex-grow items-center justify-between font-serif">
         {data?.name}
         <span className="text-text-dark">
-          {displayNumber?.toFixed(2) || "..."} {data?.units}
+          {(displayNumber || 0).toFixed(2)} {data?.units}
         </span>
       </div>
       <button
@@ -112,7 +127,7 @@ export default function Count({ startData }) {
       >
         +
       </button>
-      <dialog onClose={addItem} className="bg-transparent" ref={dialogRef}>
+      <dialog className="bg-transparent" ref={dialogRef}>
         <form className="flex flex-col items-center gap-6 rounded-lg bg-white p-6">
           <div className="font-roboto text-text-light text-md">
             <input
@@ -128,14 +143,16 @@ export default function Count({ startData }) {
           <div className="align-center text-serif flex justify-between gap-3">
             <button
               onClick={closeDialog}
+              disabled={loading}
               className="text-text-light border-border rounded-lg border-[1px] px-4 py-2"
             >
               Cancel
             </button>
             <button
               type="submit"
-              onClick={(e) => closeDialog(e, inputValue || 0)}
-              className="bg-brand rounded-lg px-4 py-2 text-sm text-white"
+              disabled={loading}
+              onClick={addItem}
+              className="bg-brand hover:bg-brand-dark disabled:bg-brand/75 rounded-lg px-4 py-2 text-sm text-white transition-colors"
             >
               Submit
             </button>
