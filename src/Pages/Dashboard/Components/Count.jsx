@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 export default function Count({ data }) {
+  const dialogRef = useRef();
+  const amtRef = useRef();
+
   const [displayNumber, setDisplayNumber] = useState();
 
   useEffect((_) => {
@@ -40,13 +43,43 @@ export default function Count({ data }) {
   }, []);
 
   return (
-    <div className="flex flex-col px-6">
-      <div className="text-text-light flex items-center justify-between rounded-lg px-6 py-3 font-serif shadow-md">
+    <div className="flex w-full max-w-md gap-3 overflow-hidden rounded-lg pl-6 shadow-md">
+      <div className="text-text-light flex flex-grow items-center justify-between font-serif">
         {data.name}
         <span className="text-text-dark">
           {displayNumber?.toFixed(2) || "..."} {data.units}
         </span>
       </div>
+      <button
+        onClick={(_) => dialogRef.current.showModal()}
+        className="bg-brand hover:bg-brand-dark h-12 px-4 text-lg font-semibold text-white transition-colors"
+      >
+        +
+      </button>
+      <dialog className="bg-transparent" ref={dialogRef}>
+        <form className="flex flex-col items-center gap-6 rounded-lg bg-white p-6">
+          <div className="font-roboto text-text-light text-md">
+            <input
+              className="border-border placeholder:text-text-light/75 w-24 rounded-sm border-[1px] px-2 py-1"
+              type="number"
+              placeholder="#"
+              required
+            />
+            <span className="ml-3">{data.units}</span>
+          </div>
+          <div className="align-center text-serif flex justify-between gap-3">
+            <button className="text-text-light border-border rounded-lg border-[1px] px-4 py-2">
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="bg-brand rounded-lg px-4 py-2 text-sm text-white"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </dialog>
     </div>
   );
 }

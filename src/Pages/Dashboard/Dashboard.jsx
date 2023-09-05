@@ -50,7 +50,7 @@ export default function Dashboard() {
   return (
     <div className="flex h-screen w-full flex-col">
       <Header />
-      <div className="flex w-full flex-grow flex-col gap-3">
+      <div className="flex w-full flex-grow flex-col items-center gap-3 px-6 py-3">
         {data.map((d, i) => {
           return <Count data={d} key={i} />;
         })}

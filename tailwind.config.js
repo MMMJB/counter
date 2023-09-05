@@ -5,7 +5,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: "#0096FF",
+        brand: "rgb(100, 150, 255)",
+        "brand-dark": "rgb(125, 150, 255)",
         border: "#DADCE0",
         text: {
           light: "#5F6366",
