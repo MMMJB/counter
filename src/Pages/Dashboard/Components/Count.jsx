@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { database } from "../../../Utils/firebase-config";
 
 import { useAuth } from "../../../Contexts/AuthContext";
@@ -27,8 +27,8 @@ export default function Count({ startData }) {
         database,
         "users",
         currentUser.uid,
-        "beans",
-        data.id,
+        "counts",
+        startData.id,
       );
     },
     [currentUser],
@@ -69,7 +69,7 @@ export default function Count({ startData }) {
           break;
         default:
           setDisplayNumber(validEvents.reduce((a, c) => a + c.amount, 0));
-        // min, max, median, count
+        // sum, average, min, max, median, count
       }
     },
     [data],

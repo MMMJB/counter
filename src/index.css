@@ -540,8 +540,24 @@ input:focus-visible {
   --tw-backdrop-sepia:  ;
 }
 
+.fixed{
+  position: fixed;
+}
+
+.bottom-6{
+  bottom: 1.5rem;
+}
+
+.right-6{
+  right: 1.5rem;
+}
+
 .mb-4{
   margin-bottom: 1rem;
+}
+
+.ml-3{
+  margin-left: 0.75rem;
 }
 
 .ml-auto{
@@ -552,12 +568,12 @@ input:focus-visible {
   margin-top: 1rem;
 }
 
-.ml-3{
-  margin-left: 0.75rem;
-}
-
 .flex{
   display: flex;
+}
+
+.grid{
+  display: grid;
 }
 
 .h-12{
@@ -572,6 +588,22 @@ input:focus-visible {
   height: 100vh;
 }
 
+.h-24{
+  height: 6rem;
+}
+
+.h-20{
+  height: 5rem;
+}
+
+.h-16{
+  height: 4rem;
+}
+
+.w-24{
+  width: 6rem;
+}
+
 .w-full{
   width: 100%;
 }
@@ -580,8 +612,12 @@ input:focus-visible {
   width: 3rem;
 }
 
-.w-24{
-  width: 6rem;
+.w-20{
+  width: 5rem;
+}
+
+.w-16{
+  width: 4rem;
 }
 
 .max-w-md{
@@ -594,6 +630,10 @@ input:focus-visible {
 
 .flex-col{
   flex-direction: column;
+}
+
+.place-items-center{
+  place-items: center;
 }
 
 .items-center{
@@ -632,6 +672,10 @@ input:focus-visible {
   border-radius: 0.125rem;
 }
 
+.rounded-full{
+  border-radius: 9999px;
+}
+
 .border-\[1px\]{
   border-width: 1px;
 }
@@ -646,26 +690,31 @@ input:focus-visible {
   background-color: rgb(100 150 255 / var(--tw-bg-opacity));
 }
 
+.bg-transparent{
+  background-color: transparent;
+}
+
 .bg-white{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.bg-transparent{
-  background-color: transparent;
 }
 
 .p-6{
   padding: 1.5rem;
 }
 
-.p-12{
-  padding: 3rem;
+.p-4{
+  padding: 1rem;
 }
 
 .px-12{
   padding-left: 3rem;
   padding-right: 3rem;
+}
+
+.px-2{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .px-4{
@@ -676,6 +725,11 @@ input:focus-visible {
 .px-6{
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+.py-1{
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .py-2{
@@ -693,19 +747,19 @@ input:focus-visible {
   padding-bottom: 2rem;
 }
 
-.px-2{
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-
-.py-1{
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
+.py-4{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .py-6{
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+}
+
+.py-\[\.8rem\]{
+  padding-top: .8rem;
+  padding-bottom: .8rem;
 }
 
 .pl-6{
@@ -739,9 +793,38 @@ input:focus-visible {
   line-height: 1.25rem;
 }
 
-.text-xs{
-  font-size: 0.75rem;
-  line-height: 1rem;
+.text-5xl{
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.text-5xl\/\[0\]{
+  font-size: 3rem;
+  line-height: 0;
+}
+
+.text-5xl\/\[6rem\]{
+  font-size: 3rem;
+  line-height: 6rem;
+}
+
+.text-4xl{
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+.text-3xl{
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.text-\[1\.75rem\]{
+  font-size: 1.75rem;
+}
+
+.text-xl{
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .font-semibold{
@@ -768,13 +851,13 @@ input:focus-visible {
   color: rgb(95 99 102 / var(--tw-text-opacity));
 }
 
+.text-text-light\/50{
+  color: rgb(95 99 102 / 0.5);
+}
+
 .text-white{
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.text-text-light\/50{
-  color: rgb(95 99 102 / 0.5);
 }
 
 .underline{
@@ -819,6 +902,19 @@ input:focus-visible {
   color: rgb(95 99 102 / 0.75);
 }
 
+.placeholder\:text-text-dark\/75::-moz-placeholder{
+  color: rgb(64 64 64 / 0.75);
+}
+
+.placeholder\:text-text-dark\/75::placeholder{
+  color: rgb(64 64 64 / 0.75);
+}
+
+.after\:content-\[\'\+\'\]::after{
+  --tw-content: '+';
+  content: var(--tw-content);
+}
+
 .hover\:bg-brand-dark:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(125 150 255 / var(--tw-bg-opacity));
@@ -826,4 +922,8 @@ input:focus-visible {
 
 .disabled\:bg-brand\/50:disabled{
   background-color: rgb(100 150 255 / 0.5);
+}
+
+.disabled\:bg-brand\/75:disabled{
+  background-color: rgb(100 150 255 / 0.75);
 }
