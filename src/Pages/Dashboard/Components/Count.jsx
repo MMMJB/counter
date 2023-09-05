@@ -1,15 +1,38 @@
 import React, { useRef, useState, useEffect } from "react";
 
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { database } from "../../../Utils/firebase-config";
+
+import { useAuth } from "../../../Contexts/AuthContext";
+
 export default function Count({ startData }) {
+  const docRef = useRef();
   const dialogRef = useRef();
 
   const [displayNumber, setDisplayNumber] = useState();
   const [data, setData] = useState();
   const [inputValue, setInputValue] = useState(0);
 
+  const { currentUser } = useAuth();
+
   useEffect((_) => {
     setData({ ...startData });
   }, []);
+
+  useEffect(
+    (_) => {
+      if (!currentUser) return;
+
+      docRef.current = doc(
+        database,
+        "users",
+        currentUser.uid,
+        "beans",
+        data.id,
+      );
+    },
+    [currentUser],
+  );
 
   useEffect(
     (_) => {
