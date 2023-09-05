@@ -62,15 +62,44 @@ export default function Count({ startData }) {
       switch (data.summaryFunction) {
         case "sum":
           setDisplayNumber(validEvents.reduce((a, c) => a + c.amount, 0));
+
           break;
         case "average":
           setDisplayNumber(
             validEvents.reduce((a, c) => a + c.amount, 0) / validEvents.length,
           );
+
+          break;
+        case "min":
+          setDisplayNumber(
+            Math.min(...Array.from(validEvents, (c) => c.amount)),
+          );
+
+          break;
+        case "max":
+          setDisplayNumber(
+            Math.max(...Array.from(validEvents, (c) => c.amount)),
+          );
+
+          break;
+        case "median":
+          const mid = Math.floor(validEvents.length / 2);
+          const sorted = validEvents.sort((a, b) => a.amount - b.amount);
+
+          setDisplayNumber(
+            validEvents.length % 2 !== 0
+              ? sorted[mid]
+              : (sorted[mid - 1] + sorted[mid]) / 2,
+          );
+
+          break;
+        case "count":
+          setDisplayNumber(validEvents.length);
+
           break;
         default:
           setDisplayNumber(validEvents.reduce((a, c) => a + c.amount, 0));
-        // sum, average, min, max, median, count
+        // median, count
       }
     },
     [data],
