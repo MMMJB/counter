@@ -11,7 +11,7 @@ export default function Count({ startData }) {
 
   const [displayNumber, setDisplayNumber] = useState();
   const [data, setData] = useState();
-  const [inputValue, setInputValue] = useState(0);
+  const [inputValue, setInputValue] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const { currentUser } = useAuth();
@@ -110,7 +110,7 @@ export default function Count({ startData }) {
 
     dialogRef.current.close();
 
-    setInputValue(0);
+    setInputValue(1);
   };
 
   const addItem = async (e) => {
@@ -120,7 +120,7 @@ export default function Count({ startData }) {
       ...data.log,
       {
         timestamp: Date.now(),
-        amount: parseInt(inputValue) || 0,
+        amount: parseInt(inputValue) || 1,
       },
     ];
 
@@ -139,7 +139,7 @@ export default function Count({ startData }) {
 
     setLoading(false);
     dialogRef.current.close();
-    setInputValue(0);
+    setInputValue(1);
   };
 
   return (
@@ -147,11 +147,14 @@ export default function Count({ startData }) {
       <div className="text-text-light flex flex-grow items-center justify-between font-serif">
         {data?.name}
         <span className="text-text-dark">
-          {(displayNumber || 0).toFixed(2)} {data?.units}
+          {(displayNumber || 1).toFixed(2)} {data?.units}
         </span>
       </div>
       <button
-        onClick={(_) => dialogRef.current.showModal()}
+        onClick={(_) => {
+          dialogRef.current.showModal();
+          document.querySelector("input[name='AMOUNT']").focus();
+        }}
         className="bg-brand hover:bg-brand-dark h-12 px-4 text-lg font-semibold text-white transition-colors"
       >
         +
@@ -161,10 +164,11 @@ export default function Count({ startData }) {
           <div className="font-roboto text-text-light text-md">
             <input
               className="border-border placeholder:text-text-light/75 w-24 rounded-sm border-[1px] px-2 py-1"
+              name="AMOUNT"
               value={inputValue}
               onInput={(e) => setInputValue(e.target.value)}
               type="number"
-              placeholder="0"
+              placeholder="1"
               required
             />
             <span className="ml-3">{data?.units}</span>
