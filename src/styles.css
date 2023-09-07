@@ -9,3 +9,9 @@
     outline: none;
   }
 }
+
+@layer components {
+  ul > li:last-of-type {
+    border: none;
+  }
+}

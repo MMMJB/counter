@@ -156,7 +156,7 @@ export default function Dashboard() {
   return (
     <div className="flex h-screen w-full flex-col">
       <Header />
-      <div className="flex w-full flex-grow flex-col items-center gap-3 px-6 py-3">
+      <div className="flex w-full flex-grow flex-col items-center gap-3 p-6">
         {(data.length > 0 &&
           data.map((d, i) => {
             return <Count startData={d} key={i} />;
@@ -168,18 +168,18 @@ export default function Dashboard() {
       </div>
       <button
         onClick={(_) => dialogRef.current.showModal()}
-        className="bg-brand hover:bg-brand-dark fixed bottom-6 right-6 rounded-full px-6 py-[.8rem] text-[1.75rem] text-white shadow-lg transition-colors"
+        className="fixed bottom-6 right-6 rounded-full bg-brand px-6 py-[.8rem] text-[1.75rem] text-white shadow-lg transition-colors hover:bg-brand-dark"
       >
         +
       </button>
       <dialog ref={dialogRef} className="bg-transparent">
-        <form className="text-text-light flex flex-col items-center gap-6 rounded-lg bg-white p-6">
+        <form className="flex flex-col items-center gap-6 rounded-lg bg-white p-6 text-text-light">
           <input
             type="text"
             placeholder="New Count"
             value={newCountName}
             onInput={(e) => setNewCountName(e.target.value)}
-            className="text-text-dark placeholder:text-text-dark/75 px-2 py-1 text-center text-xl"
+            className="px-2 py-1 text-center text-xl text-text-dark placeholder:text-text-dark/75"
           />
           <div className="flex gap-3">
             <input
@@ -187,7 +187,7 @@ export default function Dashboard() {
               placeholder="units"
               value={newCountUnits}
               onInput={(e) => setNewCountUnits(e.target.value)}
-              className="border-border placeholder:text-text-light/75 w-24 rounded-sm border-[1px] px-2 py-1"
+              className="w-24 rounded-sm border-[1px] border-border px-2 py-1 placeholder:text-text-light/75"
             />
             <select ref={operationRef}>
               <option value="sum">sum</option>
@@ -207,7 +207,7 @@ export default function Dashboard() {
             <button
               onClick={closeDialog}
               disabled={loading}
-              className="text-text-light border-border rounded-lg border-[1px] px-4 py-2"
+              className="rounded-lg border-[1px] border-border px-4 py-2 text-text-light"
             >
               Cancel
             </button>
@@ -215,7 +215,7 @@ export default function Dashboard() {
               type="submit"
               onClick={createCount}
               disabled={loading}
-              className="bg-brand hover:bg-brand-dark disabled:bg-brand/75 rounded-lg px-4 py-2 text-sm text-white transition-colors"
+              className="rounded-lg bg-brand px-4 py-2 text-sm text-white transition-colors hover:bg-brand-dark disabled:bg-brand/75"
             >
               Submit
             </button>
