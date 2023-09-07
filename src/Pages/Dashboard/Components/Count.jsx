@@ -46,21 +46,25 @@ export default function Count({ startData }) {
 
       switch (data.summaryPeriod) {
         case "daily":
-          start = new Date().setUTCHours(0, 0, 0, 0);
+          start = new Date().setHours(0, 0, 0, 0);
           break;
         case "weekly":
-          start = new Date(
-            new Date().getUTCDate() - new Date().getUTCDay(),
-          ).setUTCHours(0, 0, 0, 0);
+          start = new Date(new Date().getDate() - new Date().getDay()).setHours(
+            0,
+            0,
+            0,
+            0,
+          );
           break;
         case "monthly":
-          start = new Date(new Date().setUTCDate(1)).setUTCHours(0, 0, 0, 0);
+          start = new Date(new Date().setDate(1)).setHours(0, 0, 0, 0);
           break;
         default:
           start = 0;
       }
 
       const validEvents = data.log.filter((e) => e.timestamp >= start);
+      console.log(data.name, validEvents);
 
       switch (data.summaryFunction) {
         case "sum":
