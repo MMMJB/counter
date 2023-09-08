@@ -127,7 +127,7 @@ export default function Count({ startData }) {
       ...data.log,
       {
         timestamp: Date.now(),
-        amount: inputValue !== undefined ? parseInt(inputValue) : 1,
+        amount: inputValue !== undefined ? parseFloat(inputValue) : 1,
       },
     ];
 
