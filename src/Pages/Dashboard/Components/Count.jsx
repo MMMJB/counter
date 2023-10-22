@@ -6,8 +6,9 @@ import { database } from "../../../Utils/firebase-config";
 import { useAuth } from "../../../Contexts/AuthContext";
 
 import { ExpandLess } from "@mui/icons-material";
+import CountEditor from "./CountEditor";
 
-export default function Count({ startData }) {
+export default function Count({ startData, doEdit }) {
   const docRef = useRef();
   const dialogRef = useRef();
 
@@ -64,7 +65,7 @@ export default function Count({ startData }) {
       }
 
       const validEvents = data.log.filter((e) => e.timestamp >= start);
-      console.log(data.name, validEvents);
+      //console.log(data.name, validEvents);
 
       switch (data.summaryFunction) {
         case "sum":
@@ -169,6 +170,15 @@ export default function Count({ startData }) {
   return (
     <div className="w-full max-w-md rounded-lg shadow-md">
       <div className="flex w-full gap-3 overflow-hidden rounded-lg pl-6">
+        <button
+          onClick={(_) => {
+            doEdit(startData);
+          }}
+          className="h-12 bg-brand px-4 text-lg font-semibold text-white transition-colors hover:bg-brand-dark"
+        >
+          Edit
+        </button>
+
         <div
           onClick={(_) => setExpanded((p) => !p)}
           className="flex flex-grow cursor-pointer items-center justify-between font-serif text-text-light"
