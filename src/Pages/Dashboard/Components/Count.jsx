@@ -43,25 +43,20 @@ export default function Count({ startData, doEdit }) {
     (_) => {
       if (!data) return;
 
-      let start;
+      let start = new Date();
+      start.setHours(0, 0, 0, 0);
 
       switch (data.summaryPeriod) {
         case "daily":
-          start = new Date().setHours(0, 0, 0, 0);
           break;
         case "weekly":
-          start = new Date(new Date().getDate() - new Date().getDay()).setHours(
-            0,
-            0,
-            0,
-            0,
-          );
+          start.setDate(start.getDate() - start.getDay()); // takes us to sunday
           break;
         case "monthly":
-          start = new Date(new Date().setDate(1)).setHours(0, 0, 0, 0);
+          start.setDate(1); // first of the month
           break;
         default:
-          start = 0;
+          break;
       }
 
       const validEvents = data.log.filter((e) => e.timestamp >= start);
@@ -93,13 +88,11 @@ export default function Count({ startData, doEdit }) {
         case "median":
           const mid = Math.floor(validEvents.length / 2);
           const sorted = validEvents.sort((a, b) => a.amount - b.amount);
-
-          setDisplayNumber(
+          const median =
             validEvents.length % 2 !== 0
               ? sorted[mid]
-              : (sorted[mid - 1] + sorted[mid]) / 2,
-          );
-
+              : (sorted[mid - 1] + sorted[mid]) / 2;
+          setDisplayNumber(median.amount);
           break;
         case "count":
           setDisplayNumber(validEvents.length);
@@ -172,7 +165,7 @@ export default function Count({ startData, doEdit }) {
       <div className="flex w-full gap-3 overflow-hidden rounded-lg pl-6">
         <button
           onClick={(_) => {
-            doEdit(startData);
+            doEdit(data);
           }}
           className="h-12 bg-brand px-4 text-lg font-semibold text-white transition-colors hover:bg-brand-dark"
         >

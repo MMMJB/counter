@@ -3,31 +3,33 @@ import React, { useState, useEffect } from "react";
 const CountEditor = ({ isOpen, onClose, onConfirm, onArchive, itemToEdit }) => {
   const [name, setName] = useState("My Name");
   const [units, setUnits] = useState("widgets");
-  const [operation, setOperation] = useState("sum");
-  const [period, setPeriod] = useState("daily");
+  const [summaryFunction, setSummaryFunction] = useState("sum");
+  const [summaryPeriod, setSummaryPeriod] = useState("daily");
   const [log, setLog] = useState([]);
 
   useEffect(() => {
     if (itemToEdit) {
       setName(itemToEdit.name);
       setUnits(itemToEdit.units);
-      setOperation(itemToEdit.summaryFunction);
-      setPeriod(itemToEdit.summaryPeriod);
+      setSummaryFunction(itemToEdit.summaryFunction);
+      setSummaryPeriod(itemToEdit.summaryPeriod);
       setLog(itemToEdit.log);
     } else {
       setName("My Counter");
       setUnits("widgets");
-      setOperation("sum");
-      setPeriod("daily");
+      setSummaryFunction("sum");
+      setSummaryPeriod("daily");
       setLog([]);
     }
   }, [itemToEdit]);
 
   const handleConfirm = () => {
     if (itemToEdit) {
-      onConfirm({ ...itemToEdit, name, units, operation, period });
+      let id = itemToEdit.id;
+      let log = itemToEdit.log;
+      onConfirm({ id, name, units, summaryFunction, summaryPeriod, log });
     } else {
-      onConfirm({ name, units, operation, period, log });
+      onConfirm({ name, units, summaryFunction, summaryPeriod, log });
     }
   };
 
@@ -77,8 +79,8 @@ const CountEditor = ({ isOpen, onClose, onConfirm, onArchive, itemToEdit }) => {
               </td>
               <td align="left">
                 <select
-                  value={operation}
-                  onChange={(e) => setOperation(e.target.value)}
+                  value={summaryFunction}
+                  onChange={(e) => setSummaryFunction(e.target.value)}
                 >
                   <option value="sum">sum</option>
                   <option value="average">average</option>
@@ -95,8 +97,8 @@ const CountEditor = ({ isOpen, onClose, onConfirm, onArchive, itemToEdit }) => {
               </td>
               <td align="left">
                 <select
-                  value={period}
-                  onChange={(e) => setPeriod(e.target.value)}
+                  value={summaryPeriod}
+                  onChange={(e) => setSummaryPeriod(e.target.value)}
                 >
                   <option value="daily">daily</option>
                   <option value="weekly">weekly</option>

@@ -15,12 +15,9 @@ import { useAuth } from "../../Contexts/AuthContext";
 import Header from "./Components/Header";
 import Count from "./Components/Count";
 import CountEditor from "./Components/CountEditor";
-import { Keyboard } from "@mui/icons-material";
-import { getListItemSecondaryActionClassesUtilityClass } from "@mui/material";
 
 export default function Dashboard() {
   const [data, setData] = useState([]);
-  //const [loading, setLoading] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [itemToEdit, setItemToEdit] = useState(null);
 
@@ -95,14 +92,6 @@ export default function Dashboard() {
         });
       });
     } else {
-      const newDoc = {
-        name: itemData.name,
-        units: itemData.units || "units",
-        summaryPeriod: itemData.period || "daily",
-        summaryFunction: itemData.operation || "sum",
-        log: itemData.log,
-      };
-
       const createDoc = async (_) => {
         const collectionRef = collection(
           database,
@@ -111,7 +100,7 @@ export default function Dashboard() {
           "counts",
         );
 
-        return addDoc(collectionRef, newDoc);
+        return addDoc(collectionRef, itemData);
       };
 
       createDoc().then((count) => {
@@ -119,7 +108,7 @@ export default function Dashboard() {
           ...p,
           {
             id: count.id,
-            ...newDoc,
+            ...itemData,
           },
         ]);
       });
