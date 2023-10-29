@@ -15,12 +15,16 @@ import { useAuth } from "../../Contexts/AuthContext";
 import Header from "./Components/Header";
 import Count from "./Components/Count";
 import CountEditor from "./Components/CountEditor";
+import LogItemEditor from "./Components/LogItemEditor";
 
 export default function Dashboard() {
   const [data, setData] = useState([]);
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const [isLogItemEditorOpen, setIsLogItemEditorOpen] = useState(false);
   const [itemToEdit, setItemToEdit] = useState(null);
-
+  const [logIndex, setLogIndex] = useState(0);
+  const [amountToEdit, setAmountToEdit] = useState(0);
+  const [timestampToEdit, setTimestampToEdit] = useState(Date.now());
   const { currentUser } = useAuth();
 
   useEffect(
@@ -68,6 +72,7 @@ export default function Dashboard() {
 
   const handleConfirm = (itemData) => {
     setDialogOpen(false);
+    setIsLogItemEditorOpen(false);
 
     if (!currentUser) return;
 
@@ -117,6 +122,7 @@ export default function Dashboard() {
 
   const handleArchive = (itemData) => {
     setDialogOpen(false);
+    setIsLogItemEditorOpen(false);
 
     if (!currentUser) return;
     if (!itemData.id) return;
@@ -137,6 +143,32 @@ export default function Dashboard() {
     });
   };
 
+  const doEditLogItem = (countItem, logIndex) => {
+    setLogIndex(logIndex);
+
+    console.log(countItem.name);
+    let amt = countItem.log[logIndex].amount;
+    console.log(amt);
+    setItemToEdit(countItem);
+    setAmountToEdit(Number(amt));
+    setTimestampToEdit(countItem.log[logIndex].timestamp);
+    console.log("amount to edit: " + amountToEdit);
+    setIsLogItemEditorOpen(true);
+  };
+
+  const handleLogItemDelete = () => {
+    itemToEdit.log.splice(logIndex, 1);
+    handleConfirm(itemToEdit);
+  };
+
+  const handleLogItemSave = (amount, timestamp) => {
+    console.log("saving: " + amount);
+
+    itemToEdit.log[logIndex].amount = amount;
+    itemToEdit.log[logIndex].timestamp = timestamp;
+    handleConfirm(itemToEdit);
+  };
+
   const uid = function () {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
   };
@@ -147,7 +179,14 @@ export default function Dashboard() {
       <div className="flex w-full flex-grow flex-col items-center gap-3 p-6">
         {(data.length > 0 &&
           data.map((d, i) => {
-            return <Count startData={d} key={uid()} doEdit={openDialog} />;
+            return (
+              <Count
+                startData={d}
+                key={uid()}
+                doEdit={openDialog}
+                doEditLogItem={doEditLogItem}
+              />
+            );
           })) || (
           <span className="text-serif text-text-light/50">
             You haven't started any counts yet.
@@ -166,6 +205,14 @@ export default function Dashboard() {
         onConfirm={handleConfirm}
         onArchive={handleArchive}
         itemToEdit={itemToEdit}
+      />
+      <LogItemEditor
+        isOpen={isLogItemEditorOpen}
+        onClose={(e) => setIsLogItemEditorOpen(false)}
+        onSave={handleLogItemSave}
+        onDelete={handleLogItemDelete}
+        inAmount={amountToEdit}
+        inTimestamp={timestampToEdit}
       />
     </div>
   );

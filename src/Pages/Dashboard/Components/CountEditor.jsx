@@ -103,7 +103,7 @@ const CountEditor = ({ isOpen, onClose, onConfirm, onArchive, itemToEdit }) => {
                 Cancel
               </button>
               <button className="ba" onClick={handleArchive}>
-                Archive
+                Delete
               </button>
             </div>
           )}

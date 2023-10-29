@@ -8,7 +8,7 @@ import { useAuth } from "../../../Contexts/AuthContext";
 import { ExpandLess } from "@mui/icons-material";
 import CountEditor from "./CountEditor";
 
-export default function Count({ startData, doEdit }) {
+export default function Count({ startData, doEdit, doEditLogItem }) {
   const docRef = useRef();
   const dialogRef = useRef();
 
@@ -173,7 +173,9 @@ export default function Count({ startData, doEdit }) {
         </button>
 
         <div
-          onClick={(_) => setExpanded((p) => !p)}
+          onClick={(e) => {
+            setExpanded((p) => !p);
+          }}
           className="flex flex-grow cursor-pointer items-center justify-between font-serif text-text-light"
         >
           <span className="flex">
@@ -185,8 +187,7 @@ export default function Count({ startData, doEdit }) {
             />
           </span>
           <span className="text-text-dark">
-            {(displayNumber !== undefined ? displayNumber : 1).toFixed(2)}{" "}
-            {data?.units}
+            {displayNumber !== undefined ? displayNumber : 1} {data?.units}
           </span>
         </div>
         <button
@@ -241,6 +242,7 @@ export default function Count({ startData, doEdit }) {
                 <li
                   className="flex items-center justify-between border-b-[1px] border-b-border/50 py-1 pl-3 font-roboto"
                   key={i}
+                  onClick={(e) => doEditLogItem(data, i)}
                 >
                   <span className="text-lg text-text-dark">{c.amount}</span>
                   <span className="text-sm text-text-light">
