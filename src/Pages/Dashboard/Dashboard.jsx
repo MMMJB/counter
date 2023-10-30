@@ -147,11 +147,9 @@ export default function Dashboard() {
     setLogIndex(logIndex);
     let amt = countItem.log[logIndex].amount;
     let ts = countItem.log[logIndex].timestamp;
-    console.log("amount from cb: " + amt);
-    console.log("ts from cb: " + ts.toString());
     setItemToEdit(countItem);
-    setAmountToEdit(amt);
     setTimestampToEdit(ts);
+    setAmountToEdit(amt);
     setIsLogItemEditorOpen(true);
   };
 
@@ -161,8 +159,6 @@ export default function Dashboard() {
   };
 
   const handleLogItemSave = (amount, timestamp) => {
-    console.log("saving: " + amount);
-
     itemToEdit.log[logIndex].amount = amount;
     itemToEdit.log[logIndex].timestamp = timestamp;
     handleConfirm(itemToEdit);

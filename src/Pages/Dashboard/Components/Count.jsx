@@ -60,7 +60,6 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
       }
 
       const validEvents = data.log.filter((e) => e.timestamp >= start);
-      //console.log(data.name, validEvents);
 
       switch (data.summaryFunction) {
         case "sum":

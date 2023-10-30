@@ -9,12 +9,25 @@ const LogItemEditor = ({
   amountToEdit,
   timestampToEdit,
 }) => {
+  const formatTimestamp = (ts) => {
+    return new Date(ts)
+      .toLocaleString("sv-SE", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      })
+      .replace(" ", "T");
+  };
+
   const [amount, setAmount] = useState(amountToEdit);
-  const [timestamp, setTimestamp] = useState(timestampToEdit);
+  const [timestamp, setTimestamp] = useState(formatTimestamp(timestampToEdit));
 
   useEffect(() => {
     setAmount(amountToEdit);
-    setTimestamp(timestampToEdit);
+    setTimestamp(formatTimestamp(timestampToEdit));
   }, [amountToEdit, timestampToEdit]);
 
   return (
@@ -44,7 +57,7 @@ const LogItemEditor = ({
             <button
               className="b"
               onClick={(e) => {
-                onSave(amount, timestamp);
+                onSave(Number(amount), Date.parse(timestamp));
               }}
             >
               Save
