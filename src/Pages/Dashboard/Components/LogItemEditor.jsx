@@ -6,11 +6,16 @@ const LogItemEditor = ({
   onClose,
   onSave,
   onDelete,
-  inAmount,
-  inTimestamp,
+  amountToEdit,
+  timestampToEdit,
 }) => {
-  const [amount, setAmount] = useState(inAmount);
-  const [timestamp, setTimestamp] = useState(inTimestamp);
+  const [amount, setAmount] = useState(amountToEdit);
+  const [timestamp, setTimestamp] = useState(timestampToEdit);
+
+  useEffect(() => {
+    setAmount(amountToEdit);
+    setTimestamp(timestampToEdit);
+  }, [amountToEdit, timestampToEdit]);
 
   return (
     <dialog open={isOpen} className="bg-transparent shadow-xl">
@@ -39,7 +44,6 @@ const LogItemEditor = ({
             <button
               className="b"
               onClick={(e) => {
-                console.log("before cb: " + amount);
                 onSave(amount, timestamp);
               }}
             >

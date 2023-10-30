@@ -23,7 +23,7 @@ export default function Dashboard() {
   const [isLogItemEditorOpen, setIsLogItemEditorOpen] = useState(false);
   const [itemToEdit, setItemToEdit] = useState(null);
   const [logIndex, setLogIndex] = useState(0);
-  const [amountToEdit, setAmountToEdit] = useState(0);
+  const [amountToEdit, setAmountToEdit] = useState(-1);
   const [timestampToEdit, setTimestampToEdit] = useState(Date.now());
   const { currentUser } = useAuth();
 
@@ -145,14 +145,13 @@ export default function Dashboard() {
 
   const doEditLogItem = (countItem, logIndex) => {
     setLogIndex(logIndex);
-
-    console.log(countItem.name);
     let amt = countItem.log[logIndex].amount;
-    console.log(amt);
+    let ts = countItem.log[logIndex].timestamp;
+    console.log("amount from cb: " + amt);
+    console.log("ts from cb: " + ts.toString());
     setItemToEdit(countItem);
-    setAmountToEdit(Number(amt));
-    setTimestampToEdit(countItem.log[logIndex].timestamp);
-    console.log("amount to edit: " + amountToEdit);
+    setAmountToEdit(amt);
+    setTimestampToEdit(ts);
     setIsLogItemEditorOpen(true);
   };
 
@@ -211,8 +210,8 @@ export default function Dashboard() {
         onClose={(e) => setIsLogItemEditorOpen(false)}
         onSave={handleLogItemSave}
         onDelete={handleLogItemDelete}
-        inAmount={amountToEdit}
-        inTimestamp={timestampToEdit}
+        amountToEdit={amountToEdit}
+        timestampToEdit={timestampToEdit}
       />
     </div>
   );
