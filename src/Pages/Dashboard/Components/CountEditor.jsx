@@ -4,22 +4,16 @@ import "./CountEditor.css";
 const CountEditor = ({ isOpen, onClose, onConfirm, onArchive, itemToEdit }) => {
   const [name, setName] = useState("My Name");
   const [units, setUnits] = useState("widgets");
-  const [summaryFunction, setSummaryFunction] = useState("sum");
-  const [summaryPeriod, setSummaryPeriod] = useState("daily");
   const [log, setLog] = useState([]);
 
   useEffect(() => {
     if (itemToEdit) {
       setName(itemToEdit.name);
       setUnits(itemToEdit.units);
-      setSummaryFunction(itemToEdit.summaryFunction);
-      setSummaryPeriod(itemToEdit.summaryPeriod);
       setLog(itemToEdit.log);
     } else {
       setName("My Counter");
       setUnits("widgets");
-      setSummaryFunction("sum");
-      setSummaryPeriod("daily");
       setLog([]);
     }
   }, [itemToEdit]);
@@ -28,9 +22,9 @@ const CountEditor = ({ isOpen, onClose, onConfirm, onArchive, itemToEdit }) => {
     if (itemToEdit) {
       let id = itemToEdit.id;
       let log = itemToEdit.log;
-      onConfirm({ id, name, units, summaryFunction, summaryPeriod, log });
+      onConfirm({ id, name, units, log });
     } else {
-      onConfirm({ name, units, summaryFunction, summaryPeriod, log });
+      onConfirm({ name, units, log });
     }
   };
 
@@ -61,29 +55,6 @@ const CountEditor = ({ isOpen, onClose, onConfirm, onArchive, itemToEdit }) => {
             className="right"
             onChange={(e) => setUnits(e.target.value)}
           />
-          <label className="left">Function:</label>
-          <select
-            className="right"
-            value={summaryFunction}
-            onChange={(e) => setSummaryFunction(e.target.value)}
-          >
-            <option value="sum">sum</option>
-            <option value="average">average</option>
-            <option value="min">min</option>
-            <option value="max">max</option>
-            <option value="median">median</option>
-            <option value="count">count</option>
-          </select>
-          <label className="left">Period:</label>
-          <select
-            value={summaryPeriod}
-            className="right"
-            onChange={(e) => setSummaryPeriod(e.target.value)}
-          >
-            <option value="daily">daily</option>
-            <option value="weekly">weekly</option>
-            <option value="monthly">monthly</option>
-          </select>
           {!itemToEdit && (
             <div className="fill">
               <button className="b" onClick={handleConfirm}>

@@ -42,65 +42,12 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
   useEffect(
     (_) => {
       if (!data) return;
-
-      let start = new Date();
-      start.setHours(0, 0, 0, 0);
-
-      switch (data.summaryPeriod) {
-        case "daily":
-          break;
-        case "weekly":
-          start.setDate(start.getDate() - start.getDay()); // takes us to sunday
-          break;
-        case "monthly":
-          start.setDate(1); // first of the month
-          break;
-        default:
-          break;
-      }
-
-      const validEvents = data.log.filter((e) => e.timestamp >= start);
-
-      switch (data.summaryFunction) {
-        case "sum":
-          setDisplayNumber(validEvents.reduce((a, c) => a + c.amount, 0));
-
-          break;
-        case "average":
-          setDisplayNumber(
-            validEvents.reduce((a, c) => a + c.amount, 0) / validEvents.length,
-          );
-
-          break;
-        case "min":
-          setDisplayNumber(
-            Math.min(...Array.from(validEvents, (c) => c.amount)),
-          );
-
-          break;
-        case "max":
-          setDisplayNumber(
-            Math.max(...Array.from(validEvents, (c) => c.amount)),
-          );
-
-          break;
-        case "median":
-          const mid = Math.floor(validEvents.length / 2);
-          const sorted = validEvents.sort((a, b) => a.amount - b.amount);
-          const median =
-            validEvents.length % 2 !== 0
-              ? sorted[mid]
-              : (sorted[mid - 1] + sorted[mid]) / 2;
-          setDisplayNumber(median.amount);
-          break;
-        case "count":
-          setDisplayNumber(validEvents.length);
-
-          break;
-        default:
-          setDisplayNumber(validEvents.reduce((a, c) => a + c.amount, 0));
-        // median, count
-      }
+      let day = new Date(data.log[0].timestamp).toDateString();
+      console.log("day is " + day);
+      const validEvents = data.log.filter(
+        (e) => new Date(e.timestamp).toDateString() === day,
+      );
+      setDisplayNumber(validEvents.reduce((a, c) => a + c.amount, 0));
     },
     [data],
   );
