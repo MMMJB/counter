@@ -22,17 +22,18 @@ const LogItemEditor = ({
       .replace(" ", "T");
   };
 
-  const [amount, setAmount] = useState(amountToEdit);
+  const [amount, setAmount] = useState(Number(amountToEdit));
   const [timestamp, setTimestamp] = useState(formatTimestamp(timestampToEdit));
 
   useEffect(() => {
-    setAmount(amountToEdit);
+    setAmount(Number(amountToEdit));
     setTimestamp(formatTimestamp(timestampToEdit));
   }, [amountToEdit, timestampToEdit]);
 
   return (
     <dialog open={isOpen} className="bg-transparent shadow-xl">
       <form
+        noValidate
         onSubmit={(e) => e.preventDefault()}
         className="text-tet-light flex flex-col items-center gap-6 rounded-lg bg-white p-6"
       >
@@ -40,7 +41,6 @@ const LogItemEditor = ({
           <label className="left">Amount: </label>
           <input
             type="number"
-            placeholder="0"
             value={amount}
             className="right"
             onChange={(e) => setAmount(e.target.value)}
@@ -48,7 +48,6 @@ const LogItemEditor = ({
           <label className="left">Timestamp:</label>
           <input
             type="datetime-local"
-            placeholder=""
             value={timestamp}
             className="right"
             onChange={(e) => setTimestamp(e.target.value)}
