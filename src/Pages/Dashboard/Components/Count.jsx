@@ -14,15 +14,53 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
 
   const [displayNumber, setDisplayNumber] = useState();
   const [data, setData] = useState();
+  const [summaryLog, setSummaryLog] = useState([]);
+  const [detailDates, setDetailDates] = useState(new Set());
   const [inputValue, setInputValue] = useState(1);
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
   const { currentUser } = useAuth();
 
+  const summarizeLog = (log) => {
+    if (!log) return [];
+    if (log.length == 0) return log;
+
+    log.sort((a, b) => b.timestamp - a.timestamp);
+    let newLog = [];
+    let firstDay = new Date(log[0].timestamp).toDateString();
+    let curDay = firstDay;
+    let curObj = null;
+
+    log.forEach((li) => {
+      let d = new Date(li.timestamp).toDateString();
+
+      if (d === firstDay || detailDates.has(d)) {
+        newLog.push(li);
+      } else {
+        if (curDay != d) {
+          curDay = d;
+          curObj = { timestamp: new Date(d), amount: 0, details: [] };
+          newLog.push(curObj);
+        }
+        curObj.amount += Number(li.amount);
+        curObj.details.push(li);
+      }
+    });
+
+    return newLog;
+  };
+
   useEffect((_) => {
-    setData({ ...startData });
+    setData(startData);
   }, []);
+
+  useEffect(
+    (_) => {
+      setSummaryLog(summarizeLog(data?.log));
+    },
+    [data, detailDates],
+  );
 
   useEffect(
     (_) => {
@@ -42,8 +80,11 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
   useEffect(
     (_) => {
       if (!data) return;
+      if (data.log.length == 0) {
+        setDisplayNumber(0);
+        return;
+      }
       let day = new Date(data.log[0].timestamp).toDateString();
-      console.log("day is " + day);
       const validEvents = data.log.filter(
         (e) => new Date(e.timestamp).toDateString() === day,
       );
@@ -106,6 +147,16 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
     return date;
   };
 
+  const justDate = (ms) => {
+    const d = new Date(ms);
+    const date = d.toLocaleString("en-US", {
+      year: "2-digit",
+      month: "numeric",
+      day: "numeric",
+    });
+    return date;
+  };
+
   return (
     <div className="w-full max-w-md rounded-lg shadow-md">
       <div className="flex w-full gap-3 overflow-hidden rounded-lg pl-6">
@@ -120,6 +171,9 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
 
         <div
           onClick={(e) => {
+            if (expanded) {
+              setDetailDates(new Set());
+            }
             setExpanded((p) => !p);
           }}
           className="flex flex-grow cursor-pointer items-center justify-between font-serif text-text-light"
@@ -181,18 +235,29 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
       </div>
       {expanded && (
         <ul className="rounded-b-lg bg-white p-3 font-serif">
-          {data?.log // TODO: Limit amount shown at a time
-            .sort((a, b) => b.timestamp - a.timestamp)
+          {summaryLog // TODO: Limit amount shown at a time
             .map((c, i) => {
               return (
                 <li
                   className="flex items-center justify-between border-b-[1px] border-b-border/50 py-1 pl-3 font-roboto"
                   key={i}
-                  onClick={(e) => doEditLogItem(data, i)}
+                  onClick={(e) => {
+                    if (summaryLog[i].details) {
+                      let newDates = new Set(detailDates);
+                      newDates.add(
+                        new Date(summaryLog[i].timestamp).toDateString(),
+                      );
+                      setDetailDates(newDates);
+                    } else {
+                      doEditLogItem(data, i);
+                    }
+                  }}
                 >
                   <span className="text-lg text-text-dark">{c.amount}</span>
                   <span className="text-sm text-text-light">
-                    {prettifyDate(c.timestamp)}
+                    {c.details
+                      ? justDate(c.timestamp)
+                      : prettifyDate(c.timestamp)}
                   </span>
                 </li>
               );
