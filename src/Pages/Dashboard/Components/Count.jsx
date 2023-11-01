@@ -32,11 +32,11 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
     let curDay = firstDay;
     let curObj = null;
 
-    log.forEach((li) => {
+    log.forEach((li, i) => {
       let d = new Date(li.timestamp).toDateString();
 
       if (d === firstDay || detailDates.has(d)) {
-        newLog.push(li);
+        newLog.push({ ...li, oi: i });
       } else {
         if (curDay != d) {
           curDay = d;
@@ -44,7 +44,7 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
           newLog.push(curObj);
         }
         curObj.amount += Number(li.amount);
-        curObj.details.push(li);
+        curObj.details.push({ ...li, oi: i });
       }
     });
 
@@ -249,7 +249,7 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
                       );
                       setDetailDates(newDates);
                     } else {
-                      doEditLogItem(data, i);
+                      doEditLogItem(data, summaryLog[i].oi);
                     }
                   }}
                 >
