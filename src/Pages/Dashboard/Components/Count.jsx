@@ -19,6 +19,7 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
   const [inputValue, setInputValue] = useState(1);
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [asOf, setAsOf] = useState("");
 
   const { currentUser } = useAuth();
 
@@ -49,6 +50,18 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
     });
 
     return newLog;
+  };
+
+  const computeAsOf = (day) => {
+    const nDays =
+      (Date.now() - new Date(day).getTime()) / (1000 * 60 * 60 * 24);
+    console.log(nDays);
+    if (nDays < 1) return "";
+    if (nDays < 2) return "Yesterday";
+    if (nDays < 14) return Math.floor(nDays) + " days ago";
+    if (nDays < 60) return Math.floor(nDays / 7) + " weeks ago";
+    if (nDays < 730) return Math.floor(nDays / 30) + " months ago";
+    return Math.floor(nDays / 365) + " years ago";
   };
 
   useEffect((_) => {
@@ -89,6 +102,7 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
         (e) => new Date(e.timestamp).toDateString() === day,
       );
       setDisplayNumber(validEvents.reduce((a, c) => a + c.amount, 0));
+      setAsOf(computeAsOf(day));
     },
     [data],
   );
@@ -186,9 +200,12 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
               } ml-1 text-text-light/25`}
             />
           </span>
-          <span className="text-text-dark">
-            {displayNumber !== undefined ? displayNumber : 1} {data?.units}
-          </span>
+          <div className="flex flex-col items-center justify-between font-serif">
+            <span className="text-text-dark">
+              {displayNumber !== undefined ? displayNumber : 1} {data?.units}
+            </span>
+            <span className="text-xs text-text-light">{asOf}</span>
+          </div>
         </div>
         <button
           onClick={(_) => {
