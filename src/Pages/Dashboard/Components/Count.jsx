@@ -172,14 +172,14 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
 
   return (
     <div className="w-full max-w-md rounded-lg shadow-md">
-      <div className="flex w-full gap-3 overflow-hidden rounded-lg pl-6">
+      <div className="flex w-full gap-3 overflow-hidden rounded-lg ">
         <button
           onClick={(_) => {
             doEdit(data);
           }}
-          className="h-12 bg-brand px-4 text-lg font-semibold text-white transition-colors hover:bg-brand-dark"
+          className="h-12 bg-brand px-4 text-3xl font-semibold text-white transition-colors hover:bg-brand-dark"
         >
-          Edit
+          &#9881;
         </button>
 
         <div

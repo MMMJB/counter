@@ -35,7 +35,7 @@ const LogItemEditor = ({
       <form
         noValidate
         onSubmit={(e) => e.preventDefault()}
-        className="text-tet-light flex flex-col items-center gap-6 rounded-lg bg-white p-6"
+        className="flex flex-col items-center gap-6 rounded-lg bg-white p-6 text-text-light"
       >
         <div className="grid">
           <label className="left">Amount: </label>

@@ -36,10 +36,10 @@ const CountEditor = ({ isOpen, onClose, onConfirm, onArchive, itemToEdit }) => {
     <dialog open={isOpen} className="bg-transparent shadow-xl">
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="text-tet-light flex flex-col items-center gap-6 rounded-lg bg-white p-6"
+        className="text-tet-light flex flex-col items-center gap-6 rounded-lg bg-white p-6 font-serif text-xl"
       >
         <div className="grid">
-          <label className="left">Name: </label>
+          <label className="left text-text-light">Name: </label>
           <input
             type="text"
             placeholder="New Count"
@@ -47,7 +47,7 @@ const CountEditor = ({ isOpen, onClose, onConfirm, onArchive, itemToEdit }) => {
             className="right"
             onChange={(e) => setName(e.target.value)}
           />
-          <label className="left">Units:</label>
+          <label className="left text-text-light">Units:</label>
           <input
             type="text"
             placeholder="units"
