@@ -55,7 +55,6 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
   const computeAsOf = (day) => {
     const nDays =
       (Date.now() - new Date(day).getTime()) / (1000 * 60 * 60 * 24);
-    console.log(nDays);
     if (nDays < 1) return "";
     if (nDays < 2) return "Yesterday";
     if (nDays < 14) return Math.floor(nDays) + " days ago";
