@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import {
   collection,
-  getDocs,
+  onSnapshot,
   addDoc,
   updateDoc,
   deleteDoc,
@@ -27,39 +27,25 @@ export default function Dashboard() {
   const [timestampToEdit, setTimestampToEdit] = useState(Date.now());
   const { currentUser } = useAuth();
 
-  useEffect(
-    (_) => {
-      if (!currentUser) return;
+  useEffect(() => {
+    const collectionRef = collection(
+      database,
+      "users",
+      currentUser.uid,
+      "counts",
+    );
 
-      const getCounts = async (_) => {
-        const collectionRef = collection(
-          database,
-          "users",
-          currentUser.uid,
-          "counts",
-        );
+    const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
+      const newData = snapshot.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id };
+        const n = doc.data();
+        n.id = doc.id;
+        return n;
+      });
 
-        const querySnapshot = await getDocs(collectionRef);
-
-        querySnapshot.forEach((count) => {
-          const d = count.data();
-
-          setData((p) => [
-            ...p,
-            {
-              id: count.id,
-              ...d,
-            },
-          ]);
-        });
-      };
-
-      getCounts();
-
-      return (_) => setData([]);
-    },
-    [currentUser],
-  );
+      setData(newData);
+    });
+  }, [currentUser]);
 
   const openDialog = (item) => {
     setItemToEdit(item);
@@ -108,15 +94,7 @@ export default function Dashboard() {
         return addDoc(collectionRef, itemData);
       };
 
-      createDoc().then((count) => {
-        setData((p) => [
-          ...p,
-          {
-            id: count.id,
-            ...itemData,
-          },
-        ]);
-      });
+      createDoc();
     }
   };
 

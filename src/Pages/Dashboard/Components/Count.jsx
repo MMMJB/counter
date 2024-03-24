@@ -6,7 +6,6 @@ import { database } from "../../../Utils/firebase-config";
 import { useAuth } from "../../../Contexts/AuthContext";
 
 import { ExpandLess } from "@mui/icons-material";
-import CountEditor from "./CountEditor";
 
 export default function Count({ startData, doEdit, doEditLogItem }) {
   const docRef = useRef();
@@ -69,6 +68,7 @@ export default function Count({ startData, doEdit, doEditLogItem }) {
 
   useEffect(
     (_) => {
+      if (!data) return;
       setSummaryLog(summarizeLog(data?.log));
     },
     [data, detailDates],
